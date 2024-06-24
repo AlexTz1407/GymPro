@@ -20,12 +20,23 @@ const DownloadPDF: React.FC<DownloadPDFProps> = ({ workout }) => {
           const pdfWidth = pdf.internal.pageSize.getWidth();
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-          // Adding the canvas image to the PDF
-          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          // Calculate the scale factor to fit the image within the PDF
+          const scaleFactor = Math.min(
+            pdfWidth / imgProps.width,
+            pdfHeight / imgProps.height
+          );
 
-          // Adding a title to the PDF
-          //pdf.setFontSize(20);
-          //pdf.text("Workout Summary", pdfWidth / 2, 10, { align: "center" });
+          // Calculate the dimensions of the scaled image
+          const scaledWidth = imgProps.width * scaleFactor;
+          const scaledHeight = imgProps.height * scaleFactor;
+
+          // Calculate the position to center the image within the PDF
+          const x = (pdfWidth - scaledWidth) / 2;
+          const y = (pdfHeight - scaledHeight) / 2;
+
+          // Adding the scaled image to the PDF with a border
+          pdf.rect(x - 5, y - 5, scaledWidth + 10, scaledHeight + 10, "S");
+          pdf.addImage(imgData, "PNG", x, y, scaledWidth, scaledHeight);
 
           // Adding another image to the PDF
           const logo = await loadImage("/images/DownloadLogo.png");
@@ -35,24 +46,6 @@ const DownloadPDF: React.FC<DownloadPDFProps> = ({ workout }) => {
         }
       );
     }
-  };
-
-  // Function to load an image
-  const loadImage = (src: string): Promise<string> => {
-    return new Promise((resolve) => {
-      const img = new window.Image();
-      img.src = src;
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL("image/png"));
-        }
-      };
-    });
   };
 
   return (
@@ -69,3 +62,11 @@ const DownloadPDF: React.FC<DownloadPDFProps> = ({ workout }) => {
 };
 
 export default DownloadPDF;
+function loadImage(arg0: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const image = new window.Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = arg0;
+  });
+}

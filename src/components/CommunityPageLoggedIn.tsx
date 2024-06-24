@@ -43,6 +43,7 @@ export default function CommunityPageLoggedIn() {
       const data = (await response.json()) as Workout[];
       setWorkouts(data);
       setFilteredWorkouts(data.filter(filterFunc));
+      setWorkoutIndex(0);
     } catch (err) {
       console.log("Failed to load data", err);
       setError("Failed to load data");
@@ -132,7 +133,15 @@ export default function CommunityPageLoggedIn() {
               <div className="flex">
                 <DownloadPDF workout={workout} />
                 {isMyPace && workout.created === username && (
-                  <DeleteWorkout workout={workout} onDelete={handleDelete} />
+                  <DeleteWorkout
+                    workout={workout}
+                    onDelete={handleDelete}
+                    refreshMyPace={() =>
+                      fetchAndFilterWorkouts(
+                        (workout) => workout.created === username
+                      )
+                    }
+                  />
                 )}
               </div>
             </div>

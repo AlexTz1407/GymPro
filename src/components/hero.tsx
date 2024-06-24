@@ -36,20 +36,25 @@ export default function Hero() {
         </div>
         <div className="absolute bottom-0 w-full p-6 flex justify-center">
           <div className="">
-            <Image
-              src="/images/gympro-pfeil.png"
-              alt="pfeil"
-              width={100}
-              height={100}
-              className="arrow"
-            />
-            <Image
-              src="/images/gympro-pfeil.png"
-              alt="pfeil"
-              width={100}
-              height={100}
-              className="arrow"
-            />
+            <Link href="/">
+              <h1 className="flex justify-center text-[#00FF57] arrow">
+                Klick Hier
+              </h1>
+              <Image
+                src="/images/gympro-pfeil.png"
+                alt="pfeil"
+                width={100}
+                height={100}
+                className="arrow"
+              />
+              <Image
+                src="/images/gympro-pfeil.png"
+                alt="pfeil"
+                width={100}
+                height={100}
+                className="arrow"
+              />
+            </Link>
           </div>
         </div>
       </div>

@@ -4,9 +4,14 @@ import { Workout } from "@/types/workout";
 interface DeleteWorkoutProps {
   workout: Workout;
   onDelete: (id: string) => void;
+  refreshMyPace: () => void;
 }
 
-const DeleteWorkout: React.FC<DeleteWorkoutProps> = ({ workout, onDelete }) => {
+const DeleteWorkout: React.FC<DeleteWorkoutProps> = ({
+  workout,
+  onDelete,
+  refreshMyPace,
+}) => {
   const handleDelete = async () => {
     if (
       confirm(`Are you sure you want to delete the workout: ${workout.name}?`)
@@ -21,6 +26,7 @@ const DeleteWorkout: React.FC<DeleteWorkoutProps> = ({ workout, onDelete }) => {
           console.error("Error deleting workout:", errorData.error);
         } else {
           onDelete(workout.id);
+          await refreshMyPace(); // Ensure this runs after deletion
           const data = await response.json();
           console.log("Workout deleted successfully:", data.message);
         }

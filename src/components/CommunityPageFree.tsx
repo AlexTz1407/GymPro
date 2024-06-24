@@ -9,9 +9,6 @@ export default function CommunityPageFree() {
   const [workoutIndex, setWorkoutIndex] = useState(0);
   const [workouts, setWorkouts] = useState<Workout[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getWorkoutsFree = async () => {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +25,6 @@ export default function CommunityPageFree() {
       } catch (err) {
         console.log("Failed to load data", err);
         setError("Failed to load data");
-      } finally {
-        setIsLoading(false);
       }
     };
 

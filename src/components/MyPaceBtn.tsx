@@ -20,6 +20,7 @@ const MyPaceBtn: React.FC<MyPaceBtnProps> = ({
 }) => {
   const handleMyPace = async () => {
     const newValue = !isMyPace;
+    console.log("isMyPace", newValue);
     setIsMyPace(newValue);
     if (newValue && username) {
       await fetchAndFilterWorkouts((workout) => workout.created === username);
